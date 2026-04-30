@@ -1,0 +1,2605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CalccitramStudios.ai — Generative Video Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #0a0a0f;
+    --ink-2: #1a1a28;
+    --ink-3: #2d2d44;
+    --dim: #6b6b8a;
+    --muted: #9999b5;
+    --border: rgba(255,255,255,0.08);
+    --border-2: rgba(255,255,255,0.14);
+    --surface: rgba(255,255,255,0.04);
+    --surface-2: rgba(255,255,255,0.07);
+    --accent: #ff4d6d;
+    --accent-2: #ff8fa0;
+    --violet: #7c5ef8;
+    --violet-2: #a78bfa;
+    --cyan: #00d4ff;
+    --gold: #ffd166;
+    --white: #ffffff;
+    --off-white: #f0eef8;
+    --card-bg: rgba(15,15,28,0.9);
+    --nav-h: 72px;
+    --r: 12px;
+    --r-lg: 20px;
+    --r-xl: 32px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ink);
+    color: var(--white);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--ink); }
+  ::-webkit-scrollbar-thumb { background: var(--violet); border-radius: 2px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    height: var(--nav-h);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(10,10,15,0.85);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s ease;
+  }
+
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--violet), var(--accent));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--white);
+    line-height: 1.1;
+  }
+
+  .logo-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--cyan);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .btn-ghost {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: var(--r);
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+
+  .btn-ghost:hover {
+    color: var(--white);
+    border-color: var(--border-2);
+  }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 22px;
+    border-radius: var(--r);
+    background: linear-gradient(135deg, var(--violet) 0%, var(--accent) 100%);
+    color: var(--white);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(124,94,248,0.4); }
+  .btn-primary:hover::before { opacity: 1; }
+
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 26px;
+    border-radius: var(--r);
+    background: transparent;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    border: 1px solid var(--border-2);
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--violet-2);
+    background: rgba(124,94,248,0.08);
+    transform: translateY(-1px);
+  }
+
+  .btn-xl {
+    padding: 16px 36px;
+    font-size: 16px;
+    border-radius: 14px;
+  }
+
+  /* ── SECTION UTILITIES ── */
+  section { position: relative; }
+
+  .container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 5%;
+  }
+
+  .section-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 16px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: var(--cyan);
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1.1;
+    color: var(--white);
+  }
+
+  .section-title .highlight {
+    background: linear-gradient(135deg, var(--violet-2) 0%, var(--accent-2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-body {
+    font-size: 17px;
+    color: var(--muted);
+    line-height: 1.75;
+    max-width: 560px;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    padding-top: var(--nav-h);
+    display: flex; flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    overflow: hidden;
+  }
+
+  .hero-gradient {
+    position: absolute;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140%;
+    height: 80%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(124,94,248,0.18) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 30%, rgba(255,77,109,0.14) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(0,212,255,0.10) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .grid-overlay {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 80%);
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    padding: 80px 5% 60px;
+    max-width: 1180px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    background: rgba(124,94,248,0.12);
+    border: 1px solid rgba(124,94,248,0.25);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--violet-2);
+    margin-bottom: 32px;
+    width: fit-content;
+  }
+
+  .hero-badge-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--violet-2);
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero-h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(44px, 6.5vw, 92px);
+    line-height: 0.97;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 28px;
+    max-width: 900px;
+  }
+
+  .hero-h1 .line-accent {
+    background: linear-gradient(90deg, var(--violet-2) 0%, var(--accent) 50%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 19px;
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 580px;
+    margin-bottom: 44px;
+  }
+
+  .hero-actions {
+    display: flex; align-items: center; gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 72px;
+  }
+
+  .hero-stats {
+    display: flex; align-items: center; gap: 48px;
+    flex-wrap: wrap;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat-item {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--dim);
+  }
+
+  .stat-divider {
+    width: 1px; height: 40px;
+    background: var(--border-2);
+  }
+
+  /* HERO VIDEO MOCKUP */
+  .hero-preview {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-48%);
+    width: 38%;
+    max-width: 460px;
+    background: rgba(15,14,25,0.95);
+    border: 1px solid var(--border-2);
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+
+  .preview-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .preview-dots {
+    display: flex; gap: 6px;
+  }
+
+  .preview-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  .preview-dot:nth-child(1) { background: #ff5f57; }
+  .preview-dot:nth-child(2) { background: #febc2e; }
+  .preview-dot:nth-child(3) { background: #28c840; }
+
+  .preview-title {
+    font-size: 12px;
+    color: var(--dim);
+    flex: 1;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .preview-canvas {
+    position: relative;
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #0f0e25 0%, #1a1040 50%, #0d0d1a 100%);
+    overflow: hidden;
+  }
+
+  .preview-video-fx {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 30% 60%, rgba(124,94,248,0.3), transparent 45%),
+      radial-gradient(circle at 70% 30%, rgba(255,77,109,0.2), transparent 40%);
+  }
+
+  .preview-scene {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 8px;
+  }
+
+  .scene-icon {
+    font-size: 36px;
+    opacity: 0.9;
+  }
+
+  .scene-text {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.06em;
+  }
+
+  .preview-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 12px 16px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+  }
+
+  .overlay-bar {
+    width: 100%; height: 2px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 1px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .overlay-progress {
+    height: 100%; width: 65%;
+    background: linear-gradient(90deg, var(--violet), var(--accent));
+    border-radius: 1px;
+    position: relative;
+  }
+
+  .overlay-progress::after {
+    content: '';
+    position: absolute; right: 0; top: 50%;
+    transform: translate(50%, -50%);
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0 0 8px var(--violet);
+  }
+
+  .overlay-info {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .preview-prompt {
+    padding: 16px 18px;
+    border-top: 1px solid var(--border);
+  }
+
+  .prompt-label {
+    font-size: 10px;
+    color: var(--dim);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .prompt-input {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border-2);
+    border-radius: 10px;
+  }
+
+  .prompt-text {
+    font-size: 12px;
+    color: var(--muted);
+    flex: 1;
+  }
+
+  .prompt-btn {
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--violet), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .prompt-btn svg { width: 12px; height: 12px; }
+
+  .preview-styles {
+    padding: 12px 18px;
+    border-top: 1px solid var(--border);
+    display: flex; gap: 8px; overflow-x: auto;
+  }
+
+  .style-pill {
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    white-space: nowrap;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .style-pill.active {
+    background: rgba(124,94,248,0.2);
+    border: 1px solid rgba(124,94,248,0.4);
+    color: var(--violet-2);
+  }
+
+  .style-pill:not(.active) {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--dim);
+  }
+
+  /* ── TICKER ── */
+  .ticker-section {
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    background: rgba(255,255,255,0.015);
+  }
+
+  .ticker-track {
+    display: flex; gap: 60px;
+    width: max-content;
+    animation: ticker 28s linear infinite;
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .ticker-item {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dim);
+    white-space: nowrap;
+  }
+
+  .ticker-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--violet);
+    flex-shrink: 0;
+  }
+
+  /* ── HOW IT WORKS ── */
+  #how {
+    padding: 120px 0;
+  }
+
+  .how-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border-radius: var(--r-xl);
+    overflow: hidden;
+  }
+
+  .step-card {
+    background: var(--ink-2);
+    padding: 36px 28px;
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .step-card:hover { background: var(--ink-3); }
+
+  .step-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+  }
+
+  .step-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .step-icon.v { background: rgba(124,94,248,0.15); }
+  .step-icon.a { background: rgba(255,77,109,0.12); }
+  .step-icon.c { background: rgba(0,212,255,0.1); }
+  .step-icon.e { background: rgba(255,209,102,0.12); }
+
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--white);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .step-body {
+    font-size: 13.5px;
+    color: var(--dim);
+    line-height: 1.65;
+  }
+
+  .step-arrow {
+    position: absolute;
+    right: 20px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--border-2);
+    font-size: 18px;
+    display: none;
+  }
+
+  /* ── CAPABILITIES ── */
+  #capabilities {
+    padding: 120px 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(124,94,248,0.04) 50%, transparent 100%);
+  }
+
+  .cap-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .cap-sticky {
+    position: sticky;
+    top: calc(var(--nav-h) + 40px);
+  }
+
+  .cap-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cap-item {
+    padding: 22px 24px;
+    border-radius: var(--r);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border: 1px solid transparent;
+  }
+
+  .cap-item:hover, .cap-item.active {
+    background: var(--surface-2);
+    border-color: var(--border-2);
+  }
+
+  .cap-item.active .cap-icon-wrap { background: rgba(124,94,248,0.2); }
+
+  .cap-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 8px;
+  }
+
+  .cap-icon-wrap {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    transition: background 0.25s;
+    flex-shrink: 0;
+  }
+
+  .cap-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--white);
+  }
+
+  .cap-desc {
+    font-size: 13.5px;
+    color: var(--dim);
+    line-height: 1.6;
+    padding-left: 52px;
+  }
+
+  /* CAP DEMO PANEL */
+  .cap-demo {
+    background: var(--ink-2);
+    border: 1px solid var(--border-2);
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    position: sticky;
+    top: calc(var(--nav-h) + 40px);
+  }
+
+  .demo-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .demo-tab {
+    flex: 1;
+    padding: 14px;
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    text-align: center;
+    color: var(--dim);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .demo-tab.active {
+    color: var(--violet-2);
+    border-bottom: 2px solid var(--violet);
+    margin-bottom: -1px;
+  }
+
+  .demo-body { padding: 28px; }
+
+  .demo-screen {
+    aspect-ratio: 16/10;
+    background: linear-gradient(135deg, #0a0918 0%, #120f24 100%);
+    border-radius: var(--r);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .demo-screen-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  .glow-purple {
+    width: 200px; height: 200px;
+    background: rgba(124,94,248,0.25);
+    top: -40px; left: -40px;
+  }
+
+  .glow-pink {
+    width: 150px; height: 150px;
+    background: rgba(255,77,109,0.2);
+    bottom: -20px; right: -20px;
+  }
+
+  .demo-screen-content {
+    position: relative; z-index: 1;
+    text-align: center;
+  }
+
+  .demo-screen-icon { font-size: 42px; margin-bottom: 8px; }
+
+  .demo-screen-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.08em;
+  }
+
+  .demo-meta {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+
+  .meta-chip {
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .meta-chip-icon { font-size: 16px; }
+
+  .meta-chip-label {
+    font-size: 11px;
+    color: var(--dim);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── STYLES SECTION ── */
+  #styles {
+    padding: 120px 0;
+  }
+
+  .styles-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 60px;
+  }
+
+  .styles-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .style-card {
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    aspect-ratio: 3/4;
+  }
+
+  .style-card:hover { transform: translateY(-6px); }
+
+  .style-card:first-child {
+    grid-row: span 2;
+    aspect-ratio: unset;
+  }
+
+  .style-bg {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Cyberpunk */
+  .style-bg.cyberpunk {
+    background: linear-gradient(135deg, #020024 0%, #090979 50%, #00d4ff 100%);
+  }
+  /* Anime */
+  .style-bg.anime {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%);
+  }
+  /* Photographic */
+  .style-bg.photo {
+    background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+  }
+  /* Fantasy */
+  .style-bg.fantasy {
+    background: linear-gradient(135deg, #4834d4 0%, #686de0 50%, #be2edd 100%);
+  }
+  /* Retro */
+  .style-bg.retro {
+    background: linear-gradient(135deg, #f9ca24 0%, #f0932b 50%, #eb4d4b 100%);
+  }
+
+  .style-pattern {
+    position: absolute; inset: 0;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .style-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+  }
+
+  .style-info {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 20px;
+  }
+
+  .style-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .style-count {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .style-badge-new {
+    position: absolute;
+    top: 12px; right: 12px;
+    padding: 3px 8px;
+    background: var(--accent);
+    border-radius: 100px;
+    font-size: 9px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+
+  /* ── PLATFORMS ── */
+  #platforms {
+    padding: 120px 0;
+  }
+
+  .platform-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .platform-devices {
+    position: relative;
+    height: 500px;
+  }
+
+  .device-desktop {
+    position: absolute;
+    left: 0; top: 0;
+    width: 85%;
+    background: var(--ink-2);
+    border: 1px solid var(--border-2);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  }
+
+  .device-bar {
+    padding: 10px 14px;
+    background: var(--ink-3);
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .device-screen {
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #0d0c1e 0%, #1a1535 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ds-visual {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(124,94,248,0.3), transparent 40%),
+      radial-gradient(circle at 80% 20%, rgba(255,77,109,0.2), transparent 40%);
+  }
+
+  .ds-content {
+    position: absolute; inset: 0;
+    display: flex;
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .ds-sidebar {
+    width: 90px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 6px;
+    padding: 10px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+
+  .ds-sidebar-item {
+    height: 6px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 3px;
+  }
+
+  .ds-sidebar-item.active {
+    background: rgba(124,94,248,0.5);
+  }
+
+  .ds-main {
+    flex: 1;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+
+  .ds-video {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .ds-play {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(124,94,248,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+
+  .ds-controls {
+    display: flex; gap: 6px;
+  }
+
+  .ds-ctrl {
+    height: 20px; flex: 1;
+    background: rgba(255,255,255,0.07);
+    border-radius: 4px;
+  }
+
+  .ds-ctrl.main {
+    flex: 3;
+    background: linear-gradient(90deg, rgba(124,94,248,0.4) 0%, rgba(255,77,109,0.3) 100%);
+  }
+
+  .device-mobile {
+    position: absolute;
+    right: 0; bottom: 0;
+    width: 130px;
+    background: var(--ink-2);
+    border: 1px solid var(--border-2);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+
+  .mob-screen {
+    aspect-ratio: 9/16;
+    background: linear-gradient(180deg, #0d0c1e 0%, #1a1535 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mob-reel {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 40%, rgba(124,94,248,0.35), transparent 55%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+  }
+
+  .mob-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 10px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+  }
+
+  .mob-bar {
+    height: 2px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .mob-progress {
+    height: 100%; width: 40%;
+    background: linear-gradient(90deg, var(--violet), var(--accent));
+    border-radius: 1px;
+  }
+
+  /* ── PRICING ── */
+  #pricing {
+    padding: 120px 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(255,77,109,0.03) 50%, transparent 100%);
+  }
+
+  .pricing-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+
+  .pricing-card {
+    background: var(--ink-2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    padding: 36px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pricing-card:hover {
+    border-color: var(--border-2);
+    transform: translateY(-3px);
+  }
+
+  .pricing-card.featured {
+    background: linear-gradient(160deg, rgba(124,94,248,0.15) 0%, rgba(255,77,109,0.08) 100%);
+    border-color: rgba(124,94,248,0.35);
+    transform: scale(1.03);
+  }
+
+  .pricing-card.featured:hover {
+    transform: scale(1.03) translateY(-3px);
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: 20px; right: 20px;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, var(--violet), var(--accent));
+    border-radius: 100px;
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+
+  .plan-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 20px;
+  }
+
+  .plan-price {
+    display: flex; align-items: baseline; gap: 4px;
+    margin-bottom: 6px;
+  }
+
+  .price-currency {
+    font-size: 20px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-top: 6px;
+  }
+
+  .price-amount {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 52px;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .price-period {
+    font-size: 13px;
+    color: var(--dim);
+    margin-bottom: 8px;
+  }
+
+  .price-free {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 42px;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  .plan-desc {
+    font-size: 13px;
+    color: var(--dim);
+    line-height: 1.6;
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .plan-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .plan-features li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .feat-check {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: rgba(0,212,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    color: var(--cyan);
+    flex-shrink: 0;
+  }
+
+  .feat-check.no {
+    background: rgba(255,255,255,0.04);
+    color: var(--dim);
+  }
+
+  .btn-plan {
+    width: 100%;
+    padding: 13px;
+    border-radius: var(--r);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+    border: none;
+    display: block;
+    text-decoration: none;
+  }
+
+  .btn-plan.outline {
+    background: transparent;
+    border: 1px solid var(--border-2);
+    color: var(--white);
+  }
+
+  .btn-plan.outline:hover {
+    border-color: var(--violet-2);
+    background: rgba(124,94,248,0.08);
+  }
+
+  .btn-plan.filled {
+    background: linear-gradient(135deg, var(--violet) 0%, var(--accent) 100%);
+    color: var(--white);
+  }
+
+  .btn-plan.filled:hover {
+    box-shadow: 0 8px 30px rgba(124,94,248,0.4);
+    transform: translateY(-1px);
+  }
+
+  /* ── VOICES ── */
+  #voices {
+    padding: 120px 0;
+  }
+
+  .voices-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .voice-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .voice-card {
+    background: var(--ink-2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 16px 20px;
+    display: flex; align-items: center; gap: 16px;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .voice-card:hover, .voice-card.playing {
+    border-color: rgba(124,94,248,0.4);
+    background: rgba(124,94,248,0.06);
+  }
+
+  .voice-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .voice-avatar.playing::after {
+    content: '';
+    position: absolute; inset: -3px;
+    border-radius: 50%;
+    border: 2px solid var(--violet);
+    animation: spin-ring 2s linear infinite;
+  }
+
+  @keyframes spin-ring {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .voice-info { flex: 1; }
+
+  .voice-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--white);
+    margin-bottom: 3px;
+  }
+
+  .voice-tags {
+    display: flex; gap: 6px;
+  }
+
+  .voice-tag {
+    padding: 2px 7px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    background: var(--surface);
+    color: var(--dim);
+    border: 1px solid var(--border);
+  }
+
+  .voice-waveform {
+    display: flex; align-items: center; gap: 2px;
+    height: 28px;
+  }
+
+  .wave-bar {
+    width: 3px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.15);
+    transition: all 0.2s;
+  }
+
+  .voice-card.playing .wave-bar {
+    background: var(--violet-2);
+    animation: wave 0.8s ease-in-out infinite;
+  }
+
+  .voice-card.playing .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+  .voice-card.playing .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+  .voice-card.playing .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+  .voice-card.playing .wave-bar:nth-child(5) { animation-delay: 0.15s; }
+  .voice-card.playing .wave-bar:nth-child(6) { animation-delay: 0.25s; }
+  .voice-card.playing .wave-bar:nth-child(7) { animation-delay: 0.05s; }
+
+  @keyframes wave {
+    0%, 100% { transform: scaleY(0.4); }
+    50% { transform: scaleY(1); }
+  }
+
+  .play-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    border: 1px solid var(--border-2);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .voice-card:hover .play-btn {
+    background: rgba(124,94,248,0.2);
+    border-color: rgba(124,94,248,0.4);
+  }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials {
+    padding: 120px 0;
+    overflow: hidden;
+  }
+
+  .testimonials-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .testimonials-track-wrap {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+  }
+
+  .testimonials-track {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    animation: scroll-track 40s linear infinite;
+  }
+
+  @keyframes scroll-track {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .testi-card {
+    width: 340px;
+    flex-shrink: 0;
+    background: var(--ink-2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    padding: 28px;
+  }
+
+  .testi-quote {
+    font-size: 14.5px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+
+  .testi-stars {
+    color: var(--gold);
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+
+  .testi-author {
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .testi-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .testi-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--white);
+  }
+
+  .testi-role {
+    font-size: 12px;
+    color: var(--dim);
+  }
+
+  /* ── CTA ── */
+  #cta {
+    padding: 140px 0;
+  }
+
+  .cta-inner {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .cta-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(124,94,248,0.15) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .cta-inner > * { position: relative; z-index: 1; }
+
+  .cta-h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .cta-sub {
+    font-size: 17px;
+    color: var(--dim);
+    margin-bottom: 44px;
+    line-height: 1.65;
+  }
+
+  .cta-actions {
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .cta-note {
+    font-size: 12px;
+    color: var(--dim);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 60px 0 40px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+
+  .footer-brand { }
+
+  .footer-brand-logo {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 16px;
+    text-decoration: none;
+  }
+
+  .footer-desc {
+    font-size: 13.5px;
+    color: var(--dim);
+    line-height: 1.7;
+    max-width: 280px;
+    margin-bottom: 24px;
+  }
+
+  .social-links {
+    display: flex; gap: 10px;
+  }
+
+  .social-link {
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .social-link:hover {
+    border-color: var(--border-2);
+    background: var(--surface-2);
+    transform: translateY(-2px);
+  }
+
+  .footer-col-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--white);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-links a {
+    font-size: 13.5px;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--white); }
+
+  .footer-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-copy {
+    font-size: 12px;
+    color: var(--dim);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .footer-legal {
+    display: flex; gap: 24px;
+  }
+
+  .footer-legal a {
+    font-size: 12px;
+    color: var(--dim);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    transition: color 0.2s;
+  }
+
+  .footer-legal a:hover { color: var(--white); }
+
+  /* ── MOBILE MENU ── */
+  .mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--white);
+    font-size: 22px;
+  }
+
+  @media (max-width: 1024px) {
+    .hero-preview { display: none; }
+    .steps-grid { grid-template-columns: repeat(2, 1fr); }
+    .cap-layout, .platform-split, .voices-layout { grid-template-columns: 1fr; }
+    .cap-sticky, .cap-demo { position: static; }
+    .styles-grid { grid-template-columns: repeat(2, 1fr); }
+    .style-card:first-child { grid-row: unset; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .pricing-card.featured { transform: none; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .mobile-toggle { display: block; }
+    .hero-h1 { font-size: 42px; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .styles-grid { grid-template-columns: 1fr 1fr; }
+    .hero-stats { gap: 24px; }
+    .stat-divider { display: none; }
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── ANIM ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .fade-up-delay-1 { transition-delay: 0.1s; }
+  .fade-up-delay-2 { transition-delay: 0.2s; }
+  .fade-up-delay-3 { transition-delay: 0.3s; }
+
+  /* Counting number */
+  .count-num { display: inline-block; }
+
+  /* Noise overlay */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <a href="#hero" class="logo">
+    <div class="logo-mark">C</div>
+    <div>
+      <div class="logo-text">CalccitramStudios</div>
+      <div class="logo-sub">.ai</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#capabilities">Features</a></li>
+    <li><a href="#styles">Styles</a></li>
+    <li><a href="#voices">Voices</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="#" class="btn-ghost">Sign In</a>
+    <a href="#pricing" class="btn-primary">
+      Start Free
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+  <button class="mobile-toggle" onclick="document.body.classList.toggle('mobile-open')">☰</button>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="hero-gradient"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Now Live — AI Video Generation Platform
+    </div>
+
+    <h1 class="hero-h1">
+      Turn Any Idea Into<br>
+      <span class="line-accent">Viral-Ready Video</span>
+    </h1>
+
+    <p class="hero-sub">
+      Script to screen in minutes. CalccitramStudios.ai automates the entire video production workflow — from storyboard to export, with consistent characters, lifelike voices, and 200+ style templates.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#pricing" class="btn-primary btn-xl">
+        Create Your First Video
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#how" class="btn-outline btn-xl">
+        See How It Works
+      </a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num count-num" data-target="50000">0</span>
+        <span class="stat-label">Videos Created</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num count-num" data-target="200">0</span>
+        <span class="stat-label">Style Templates</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num count-num" data-target="40">0</span>
+        <span class="stat-label">AI Voices</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num count-num" data-target="98">0</span>
+        <span class="stat-label">% Satisfaction</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING UI PREVIEW -->
+  <div class="hero-preview">
+    <div class="preview-header">
+      <div class="preview-dots">
+        <div class="preview-dot"></div>
+        <div class="preview-dot"></div>
+        <div class="preview-dot"></div>
+      </div>
+      <div class="preview-title">Studio Editor · v2.4</div>
+    </div>
+    <div class="preview-canvas">
+      <div class="preview-video-fx"></div>
+      <div class="preview-scene">
+        <div class="scene-icon">🎬</div>
+        <div class="scene-text">Scene 3 of 8 · Rendering</div>
+      </div>
+      <div class="preview-overlay">
+        <div class="overlay-bar"><div class="overlay-progress"></div></div>
+        <div class="overlay-info">
+          <span>0:42</span>
+          <span>1080p · 9:16</span>
+          <span>1:08</span>
+        </div>
+      </div>
+    </div>
+    <div class="preview-prompt">
+      <div class="prompt-label">Prompt</div>
+      <div class="prompt-input">
+        <div class="prompt-text">A cyberpunk city at midnight, rain reflecting neon...</div>
+        <div class="prompt-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="preview-styles">
+      <div class="style-pill active">Cyberpunk</div>
+      <div class="style-pill">Anime</div>
+      <div class="style-pill">Photographic</div>
+      <div class="style-pill">Fantasy</div>
+      <div class="style-pill">Retro</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TICKER ── -->
+<div class="ticker-section">
+  <div class="ticker-track" id="ticker">
+    <div class="ticker-item"><span class="ticker-dot"></span>Script to Video</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Consistent Characters</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>40+ AI Voices</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>200+ Style Templates</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Full Motion Animation</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>TikTok Ready</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Instagram Reels</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>YouTube Shorts</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>HD 1080p Export</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Built-in Editor</div>
+    <!-- Duplicate for seamless loop -->
+    <div class="ticker-item"><span class="ticker-dot"></span>Script to Video</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Consistent Characters</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>40+ AI Voices</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>200+ Style Templates</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Full Motion Animation</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>TikTok Ready</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Instagram Reels</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>YouTube Shorts</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>HD 1080p Export</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Built-in Editor</div>
+  </div>
+</div>
+
+<!-- ── HOW IT WORKS ── -->
+<section id="how">
+  <div class="container">
+    <div class="how-header fade-up">
+      <div class="section-label">Process</div>
+      <h2 class="section-title">From Idea to Export<br><span class="highlight">in 4 Simple Steps</span></h2>
+    </div>
+
+    <div class="steps-grid fade-up">
+      <div class="step-card">
+        <div class="step-number">01 / INPUT</div>
+        <div class="step-icon v">📝</div>
+        <div class="step-title">Enter Your Prompt or Script</div>
+        <div class="step-body">Type a simple idea, paste a full script, a blog post, or upload a podcast episode. Any form of input works as your starting point.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-number">02 / GENERATE</div>
+        <div class="step-icon a">🤖</div>
+        <div class="step-title">AI Builds Your Storyboard</div>
+        <div class="step-body">The AI instantly creates a complete storyboard with generated images, B-roll footage, narration, captions, and transitions matched to your content.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-number">03 / REFINE</div>
+        <div class="step-icon c">✨</div>
+        <div class="step-title">Edit and Animate Scenes</div>
+        <div class="step-body">Use Full Motion to animate static scenes with one click. Re-prompt specific visuals to swap clothing, scenery, or characters. Fine-tune timing and captions.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-number">04 / EXPORT</div>
+        <div class="step-icon e">🚀</div>
+        <div class="step-title">Export in Any Format</div>
+        <div class="step-body">Export in HD 1080p or 4K. Choose your aspect ratio — 16:9 for YouTube, 9:16 for TikTok and Reels, or 1:1 for Instagram. Watermark-free on paid plans.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CAPABILITIES ── -->
+<section id="capabilities">
+  <div class="container">
+    <div class="cap-layout">
+      <div>
+        <div class="fade-up">
+          <div class="section-label">Core Features</div>
+          <h2 class="section-title" style="margin-bottom: 48px;">Everything You Need<br><span class="highlight">to Go Viral</span></h2>
+        </div>
+        <div class="cap-list">
+          <div class="cap-item active fade-up">
+            <div class="cap-header">
+              <div class="cap-icon-wrap">📽️</div>
+              <div class="cap-title">Script to Video</div>
+            </div>
+            <div class="cap-desc">Transform any text — a tweet, blog post, or full script — into a polished video with one click. The AI handles scene composition, timing, and visual storytelling automatically.</div>
+          </div>
+          <div class="cap-item fade-up fade-up-delay-1">
+            <div class="cap-header">
+              <div class="cap-icon-wrap">🎭</div>
+              <div class="cap-title">Consistent Characters</div>
+            </div>
+            <div class="cap-desc">Create custom AI characters that maintain their appearance, clothing, and style across every scene — a problem that has plagued AI video generators until now.</div>
+          </div>
+          <div class="cap-item fade-up fade-up-delay-2">
+            <div class="cap-header">
+              <div class="cap-icon-wrap">🎙️</div>
+              <div class="cap-title">Custom Narrators</div>
+            </div>
+            <div class="cap-desc">Choose from 40+ lifelike AI voices with different accents, ages, and personalities. Or upload your own audio for a fully personalized narration experience.</div>
+          </div>
+          <div class="cap-item fade-up fade-up-delay-3">
+            <div class="cap-header">
+              <div class="cap-icon-wrap">✂️</div>
+              <div class="cap-title">Built-in Video Editor</div>
+            </div>
+            <div class="cap-desc">Unlike most AI video tools, CalccitramStudios includes a full editor — adjust visual effects, timing, captions, transitions, and music without leaving the platform.</div>
+          </div>
+          <div class="cap-item fade-up">
+            <div class="cap-header">
+              <div class="cap-icon-wrap">🎨</div>
+              <div class="cap-title">Style Control</div>
+            </div>
+            <div class="cap-desc">Select from 200+ visual style templates spanning cyberpunk, anime, photographic, fantasy, and more. Or upload a reference image to create your own custom style.</div>
+          </div>
+          <div class="cap-item fade-up">
+            <div class="cap-header">
+              <div class="cap-icon-wrap">⚡</div>
+              <div class="cap-title">Full Motion Animation</div>
+            </div>
+            <div class="cap-desc">Bring static scenes to life with a single click. Full Motion animates characters, camera movements, and environmental effects to create truly cinematic moments.</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="cap-demo fade-up">
+          <div class="demo-tabs">
+            <div class="demo-tab active">Preview</div>
+            <div class="demo-tab">Timeline</div>
+            <div class="demo-tab">Export</div>
+          </div>
+          <div class="demo-body">
+            <div class="demo-screen">
+              <div class="demo-screen-glow glow-purple"></div>
+              <div class="demo-screen-glow glow-pink"></div>
+              <div class="demo-screen-content">
+                <div class="demo-screen-icon">🎬</div>
+                <div class="demo-screen-label">Scene Preview · Cyberpunk</div>
+              </div>
+            </div>
+            <div class="demo-meta">
+              <div class="meta-chip">
+                <span class="meta-chip-icon">🎞️</span>
+                <div>
+                  <div style="font-size:12px;color:var(--white);margin-bottom:2px">1080p HD</div>
+                  <div class="meta-chip-label">Resolution</div>
+                </div>
+              </div>
+              <div class="meta-chip">
+                <span class="meta-chip-icon">📐</span>
+                <div>
+                  <div style="font-size:12px;color:var(--white);margin-bottom:2px">9:16 Vertical</div>
+                  <div class="meta-chip-label">Aspect Ratio</div>
+                </div>
+              </div>
+              <div class="meta-chip">
+                <span class="meta-chip-icon">⏱️</span>
+                <div>
+                  <div style="font-size:12px;color:var(--white);margin-bottom:2px">0:47 Duration</div>
+                  <div class="meta-chip-label">Runtime</div>
+                </div>
+              </div>
+              <div class="meta-chip">
+                <span class="meta-chip-icon">🎙️</span>
+                <div>
+                  <div style="font-size:12px;color:var(--white);margin-bottom:2px">Nova · EN-US</div>
+                  <div class="meta-chip-label">Narrator</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STYLES ── -->
+<section id="styles">
+  <div class="container">
+    <div class="styles-header fade-up">
+      <div>
+        <div class="section-label">Visual Styles</div>
+        <h2 class="section-title">200+ Templates,<br><span class="highlight">Infinite Looks</span></h2>
+      </div>
+      <p class="section-body" style="max-width:320px">From gritty cyberpunk to soft anime — every visual universe is at your fingertips. Upload a reference image to create your own.</p>
+    </div>
+
+    <div class="styles-grid fade-up">
+      <!-- Big card -->
+      <div class="style-card">
+        <div class="style-bg cyberpunk">
+          <div class="style-pattern"></div>
+        </div>
+        <div class="style-overlay"></div>
+        <div class="style-info">
+          <div class="style-name">Cyberpunk</div>
+          <div class="style-count">32 variants · Most Popular</div>
+        </div>
+        <div class="style-badge-new">🔥 Hot</div>
+      </div>
+      <!-- Grid cards -->
+      <div class="style-card">
+        <div class="style-bg anime"><div class="style-pattern"></div></div>
+        <div class="style-overlay"></div>
+        <div class="style-info">
+          <div class="style-name">Anime</div>
+          <div class="style-count">28 variants</div>
+        </div>
+      </div>
+      <div class="style-card">
+        <div class="style-bg photo"><div class="style-pattern"></div></div>
+        <div class="style-overlay"></div>
+        <div class="style-info">
+          <div class="style-name">Photographic</div>
+          <div class="style-count">44 variants</div>
+        </div>
+        <div class="style-badge-new">New</div>
+      </div>
+      <div class="style-card">
+        <div class="style-bg fantasy"><div class="style-pattern"></div></div>
+        <div class="style-overlay"></div>
+        <div class="style-info">
+          <div class="style-name">Fantasy</div>
+          <div class="style-count">22 variants</div>
+        </div>
+      </div>
+      <div class="style-card">
+        <div class="style-bg retro"><div class="style-pattern"></div></div>
+        <div class="style-overlay"></div>
+        <div class="style-info">
+          <div class="style-name">Retro</div>
+          <div class="style-count">18 variants</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PLATFORMS ── -->
+<section id="platforms">
+  <div class="container">
+    <div class="platform-split">
+      <div class="platform-devices fade-up">
+        <!-- Desktop mockup -->
+        <div class="device-desktop">
+          <div class="device-bar">
+            <div class="preview-dots">
+              <div class="preview-dot"></div>
+              <div class="preview-dot"></div>
+              <div class="preview-dot"></div>
+            </div>
+          </div>
+          <div class="device-screen">
+            <div class="ds-visual"></div>
+            <div class="ds-content">
+              <div class="ds-sidebar">
+                <div class="ds-sidebar-item active"></div>
+                <div class="ds-sidebar-item"></div>
+                <div class="ds-sidebar-item"></div>
+                <div class="ds-sidebar-item"></div>
+                <div class="ds-sidebar-item"></div>
+                <div class="ds-sidebar-item"></div>
+              </div>
+              <div class="ds-main">
+                <div class="ds-video">
+                  <div class="ds-play">▶</div>
+                </div>
+                <div class="ds-controls">
+                  <div class="ds-ctrl main"></div>
+                  <div class="ds-ctrl"></div>
+                  <div class="ds-ctrl"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Mobile mockup -->
+        <div class="device-mobile">
+          <div class="mob-screen">
+            <div class="mob-reel">🎬</div>
+            <div class="mob-overlay">
+              <div class="mob-bar"><div class="mob-progress"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fade-up fade-up-delay-2">
+        <div class="section-label">Availability</div>
+        <h2 class="section-title" style="margin-bottom: 20px;">Create Anywhere,<br><span class="highlight">on Any Device</span></h2>
+        <p class="section-body" style="margin-bottom: 40px;">
+          Access the full studio from any web browser, or take your creative workflow mobile with our iOS and Android apps. Your projects sync seamlessly across all your devices.
+        </p>
+
+        <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:40px;">
+          <div style="display:flex;align-items:center;gap:14px;padding:16px 20px;background:var(--ink-2);border:1px solid var(--border-2);border-radius:var(--r-lg);">
+            <span style="font-size:28px;">🌐</span>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:15px;color:var(--white);margin-bottom:2px;">Web Browser</div>
+              <div style="font-size:13px;color:var(--dim);">Full studio access — Chrome, Firefox, Safari</div>
+            </div>
+            <span style="margin-left:auto;font-size:11px;color:var(--cyan);font-family:'Space Mono',monospace;">AVAILABLE</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;padding:16px 20px;background:var(--ink-2);border:1px solid var(--border-2);border-radius:var(--r-lg);">
+            <span style="font-size:28px;">📱</span>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:15px;color:var(--white);margin-bottom:2px;">iOS App</div>
+              <div style="font-size:13px;color:var(--dim);">Native iPhone & iPad experience</div>
+            </div>
+            <a href="https://hypernatural.ai/" style="margin-left:auto;font-size:11px;color:var(--violet-2);font-family:'Space Mono',monospace;text-decoration:none;">DOWNLOAD ↗</a>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;padding:16px 20px;background:var(--ink-2);border:1px solid var(--border-2);border-radius:var(--r-lg);">
+            <span style="font-size:28px;">🤖</span>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:15px;color:var(--white);margin-bottom:2px;">Android App</div>
+              <div style="font-size:13px;color:var(--dim);">Full-featured mobile studio</div>
+            </div>
+            <a href="https://hypernatural.en.aptoide.com/app" style="margin-left:auto;font-size:11px;color:var(--violet-2);font-family:'Space Mono',monospace;text-decoration:none;">DOWNLOAD ↗</a>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--dim);">
+            <span style="color:var(--cyan)">✓</span> No download required for web
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--dim);">
+            <span style="color:var(--cyan)">✓</span> Projects sync across devices
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--dim);">
+            <span style="color:var(--cyan)">✓</span> Export directly to social
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── VOICES ── -->
+<section id="voices">
+  <div class="container">
+    <div class="voices-layout">
+      <div class="fade-up">
+        <div class="section-label">Narrators</div>
+        <h2 class="section-title" style="margin-bottom:20px;">40+ Lifelike<br><span class="highlight">AI Voices</span></h2>
+        <p class="section-body" style="margin-bottom:40px;">
+          Choose from a diverse cast of AI narrators spanning accents, ages, and personalities. Or upload your own audio for a completely personalized narration. Every voice is studio-quality.
+        </p>
+        <a href="#pricing" class="btn-primary">Try a Voice Free</a>
+      </div>
+
+      <div class="voice-cards fade-up fade-up-delay-1">
+        <div class="voice-card playing" onclick="toggleVoice(this)">
+          <div class="voice-avatar playing" style="background:rgba(124,94,248,0.2)">🎙️</div>
+          <div class="voice-info">
+            <div class="voice-name">Nova</div>
+            <div class="voice-tags">
+              <span class="voice-tag">EN-US</span>
+              <span class="voice-tag">Female</span>
+              <span class="voice-tag">Professional</span>
+            </div>
+          </div>
+          <div class="voice-waveform">
+            <div class="wave-bar" style="height:8px"></div>
+            <div class="wave-bar" style="height:16px"></div>
+            <div class="wave-bar" style="height:22px"></div>
+            <div class="wave-bar" style="height:14px"></div>
+            <div class="wave-bar" style="height:20px"></div>
+            <div class="wave-bar" style="height:10px"></div>
+            <div class="wave-bar" style="height:18px"></div>
+          </div>
+          <div class="play-btn">⏸</div>
+        </div>
+
+        <div class="voice-card" onclick="toggleVoice(this)">
+          <div class="voice-avatar" style="background:rgba(255,77,109,0.15)">🎤</div>
+          <div class="voice-info">
+            <div class="voice-name">Marcus</div>
+            <div class="voice-tags">
+              <span class="voice-tag">EN-GB</span>
+              <span class="voice-tag">Male</span>
+              <span class="voice-tag">Deep</span>
+            </div>
+          </div>
+          <div class="voice-waveform">
+            <div class="wave-bar" style="height:12px"></div>
+            <div class="wave-bar" style="height:8px"></div>
+            <div class="wave-bar" style="height:18px"></div>
+            <div class="wave-bar" style="height:22px"></div>
+            <div class="wave-bar" style="height:14px"></div>
+            <div class="wave-bar" style="height:20px"></div>
+            <div class="wave-bar" style="height:10px"></div>
+          </div>
+          <div class="play-btn">▶</div>
+        </div>
+
+        <div class="voice-card" onclick="toggleVoice(this)">
+          <div class="voice-avatar" style="background:rgba(0,212,255,0.12)">🗣️</div>
+          <div class="voice-info">
+            <div class="voice-name">Sakura</div>
+            <div class="voice-tags">
+              <span class="voice-tag">JP</span>
+              <span class="voice-tag">Female</span>
+              <span class="voice-tag">Energetic</span>
+            </div>
+          </div>
+          <div class="voice-waveform">
+            <div class="wave-bar" style="height:18px"></div>
+            <div class="wave-bar" style="height:22px"></div>
+            <div class="wave-bar" style="height:10px"></div>
+            <div class="wave-bar" style="height:16px"></div>
+            <div class="wave-bar" style="height:8px"></div>
+            <div class="wave-bar" style="height:14px"></div>
+            <div class="wave-bar" style="height:20px"></div>
+          </div>
+          <div class="play-btn">▶</div>
+        </div>
+
+        <div class="voice-card" onclick="toggleVoice(this)">
+          <div class="voice-avatar" style="background:rgba(255,209,102,0.12)">🎙️</div>
+          <div class="voice-info">
+            <div class="voice-name">Ravi</div>
+            <div class="voice-tags">
+              <span class="voice-tag">IN-EN</span>
+              <span class="voice-tag">Male</span>
+              <span class="voice-tag">Warm</span>
+            </div>
+          </div>
+          <div class="voice-waveform">
+            <div class="wave-bar" style="height:14px"></div>
+            <div class="wave-bar" style="height:20px"></div>
+            <div class="wave-bar" style="height:8px"></div>
+            <div class="wave-bar" style="height:22px"></div>
+            <div class="wave-bar" style="height:16px"></div>
+            <div class="wave-bar" style="height:12px"></div>
+            <div class="wave-bar" style="height:18px"></div>
+          </div>
+          <div class="play-btn">▶</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section id="testimonials">
+  <div class="container">
+    <div class="testimonials-header fade-up">
+      <div class="section-label">Community</div>
+      <h2 class="section-title">Trusted by Creators<br><span class="highlight">Worldwide</span></h2>
+    </div>
+  </div>
+
+  <div class="testimonials-track-wrap">
+    <div class="testimonials-track" id="testiTrack">
+      <!-- Set 1 -->
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">"I went from script to a fully produced TikTok in under 8 minutes. The consistent character feature is an absolute game-changer for my brand storytelling."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(124,94,248,0.2)">👩</div>
+          <div>
+            <div class="testi-name">Priya Sharma</div>
+            <div class="testi-role">Content Creator · 2.1M Followers</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">"Our agency produces 50+ short-form videos per week. CalccitramStudios cut our production time by 80% while actually improving visual quality."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(255,77,109,0.15)">👨</div>
+          <div>
+            <div class="testi-name">James Okafor</div>
+            <div class="testi-role">Founder · ViralHouse Agency</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">"The 200+ style templates are incredible. I can maintain a completely unique visual identity while still using AI generation — something no other tool offers."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(0,212,255,0.1)">🧑</div>
+          <div>
+            <div class="testi-name">Sofia Mendes</div>
+            <div class="testi-role">YouTube Creator · 890K Subscribers</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">"Built-in editor means I never have to leave the platform. Script, generate, edit, export — it's truly all-in-one and the output quality is professional grade."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(255,209,102,0.12)">👩</div>
+          <div>
+            <div class="testi-name">Aisha Nwosu</div>
+            <div class="testi-role">Social Media Manager · Fortune 500</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">"The AI voices are indistinguishable from real humans. I use Nova for my English content and Sakura for my Japanese audience — flawless for both."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(190,46,221,0.15)">👨</div>
+          <div>
+            <div class="testi-name">Kenji Nakamura</div>
+            <div class="testi-role">Bilingual Creator · 450K Followers</div>
+          </div>
+        </div>
+      </div>
+      <!-- Duplicate for seamless loop -->
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">"I went from script to a fully produced TikTok in under 8 minutes. The consistent character feature is an absolute game-changer for my brand storytelling."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(124,94,248,0.2)">👩</div>
+          <div>
+            <div class="testi-name">Priya Sharma</div>
+            <div class="testi-role">Content Creator · 2.1M Followers</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">"Our agency produces 50+ short-form videos per week. CalccitramStudios cut our production time by 80% while actually improving visual quality."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(255,77,109,0.15)">👨</div>
+          <div>
+            <div class="testi-name">James Okafor</div>
+            <div class="testi-role">Founder · ViralHouse Agency</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">"The 200+ style templates are incredible. I can maintain a completely unique visual identity while still using AI generation — something no other tool offers."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(0,212,255,0.1)">🧑</div>
+          <div>
+            <div class="testi-name">Sofia Mendes</div>
+            <div class="testi-role">YouTube Creator · 890K Subscribers</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section id="pricing">
+  <div class="container">
+    <div class="pricing-header fade-up">
+      <div class="section-label">Pricing</div>
+      <h2 class="section-title" style="margin-bottom:16px;">Start Free,<br><span class="highlight">Scale As You Grow</span></h2>
+      <p style="font-size:16px;color:var(--dim);">No credit card required. Upgrade or downgrade anytime.</p>
+    </div>
+
+    <div class="pricing-grid fade-up">
+      <!-- Free -->
+      <div class="pricing-card">
+        <div class="plan-name">Free</div>
+        <div class="price-free">$0</div>
+        <div class="price-period">Forever free</div>
+        <div class="plan-desc">Perfect for trying out the platform. Get enough credits to produce your first few videos and explore core features.</div>
+        <ul class="plan-features">
+          <li><div class="feat-check">✓</div> ~4 videos per month</li>
+          <li><div class="feat-check">✓</div> 720p export quality</li>
+          <li><div class="feat-check">✓</div> 50+ style templates</li>
+          <li><div class="feat-check">✓</div> 5 AI voices</li>
+          <li><div class="feat-check">✓</div> 9:16 & 16:9 aspect ratios</li>
+          <li><div class="feat-check no">—</div> <span style="color:var(--dim)">Watermark on exports</span></li>
+          <li><div class="feat-check no">—</div> <span style="color:var(--dim)">Custom characters</span></li>
+        </ul>
+        <a href="#" class="btn-plan outline">Get Started Free</a>
+      </div>
+
+      <!-- Creator (Featured) -->
+      <div class="pricing-card featured">
+        <div class="featured-badge">Most Popular</div>
+        <div class="plan-name">Creator</div>
+        <div class="plan-price">
+          <span class="price-currency">$</span>
+          <span class="price-amount">29</span>
+        </div>
+        <div class="price-period">per month, billed monthly</div>
+        <div class="plan-desc">For serious content creators who publish regularly. Everything you need to build a consistent, professional video presence.</div>
+        <ul class="plan-features">
+          <li><div class="feat-check">✓</div> 40 videos per month</li>
+          <li><div class="feat-check">✓</div> 1080p HD exports</li>
+          <li><div class="feat-check">✓</div> 200+ style templates</li>
+          <li><div class="feat-check">✓</div> 40+ AI voices</li>
+          <li><div class="feat-check">✓</div> All aspect ratios</li>
+          <li><div class="feat-check">✓</div> No watermark</li>
+          <li><div class="feat-check">✓</div> 3 custom characters</li>
+          <li><div class="feat-check">✓</div> Built-in editor</li>
+          <li><div class="feat-check">✓</div> Full Motion animation</li>
+        </ul>
+        <a href="#" class="btn-plan filled">Start Creator Plan</a>
+      </div>
+
+      <!-- Pro -->
+      <div class="pricing-card">
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">
+          <span class="price-currency">$</span>
+          <span class="price-amount">79</span>
+        </div>
+        <div class="price-period">per month, billed monthly</div>
+        <div class="plan-desc">For agencies and power users who need maximum output, 4K quality, unlimited characters, and priority rendering speed.</div>
+        <ul class="plan-features">
+          <li><div class="feat-check">✓</div> Unlimited videos</li>
+          <li><div class="feat-check">✓</div> 4K Ultra HD exports</li>
+          <li><div class="feat-check">✓</div> 200+ style templates</li>
+          <li><div class="feat-check">✓</div> 40+ AI voices + custom upload</li>
+          <li><div class="feat-check">✓</div> All aspect ratios</li>
+          <li><div class="feat-check">✓</div> No watermark</li>
+          <li><div class="feat-check">✓</div> Unlimited custom characters</li>
+          <li><div class="feat-check">✓</div> Priority rendering</li>
+          <li><div class="feat-check">✓</div> API access</li>
+          <li><div class="feat-check">✓</div> Team collaboration</li>
+        </ul>
+        <a href="#" class="btn-plan outline">Start Pro Plan</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section id="cta">
+  <div class="container">
+    <div class="cta-inner fade-up">
+      <div class="cta-glow"></div>
+      <div class="section-label" style="justify-content:center;">Get Started Today</div>
+      <h2 class="cta-h2">Your Next Viral Video<br>Starts Right Now</h2>
+      <p class="cta-sub">
+        Join 50,000+ creators who've transformed their content workflow with CalccitramStudios.ai. No credit card required.
+      </p>
+      <div class="cta-actions">
+        <a href="#" class="btn-primary btn-xl">
+          Create Your First Video
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#how" class="btn-outline btn-xl">Watch Demo</a>
+      </div>
+      <p class="cta-note">✦ Free plan · No credit card · 4 free videos to start</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#hero" class="footer-brand-logo">
+          <div class="logo-mark">C</div>
+          <div>
+            <div class="logo-text">CalccitramStudios</div>
+            <div class="logo-sub">.ai</div>
+          </div>
+        </a>
+        <p class="footer-desc">The all-in-one generative video platform for creators who want to go viral. Script to screen in minutes.</p>
+        <div class="social-links">
+          <a href="#" class="social-link">𝕏</a>
+          <a href="#" class="social-link">▶</a>
+          <a href="#" class="social-link">📸</a>
+          <a href="#" class="social-link">in</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Product</div>
+        <ul class="footer-links">
+          <li><a href="#capabilities">Features</a></li>
+          <li><a href="#styles">Style Templates</a></li>
+          <li><a href="#voices">AI Voices</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#">API</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Use Cases</div>
+        <ul class="footer-links">
+          <li><a href="#">TikTok Videos</a></li>
+          <li><a href="#">Instagram Reels</a></li>
+          <li><a href="#">YouTube Shorts</a></li>
+          <li><a href="#">Podcast Clips</a></li>
+          <li><a href="#">Ad Creatives</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 CalccitramStudios.ai · All rights reserved</div>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── INTERSECTION OBSERVER for fade-up ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// ── COUNT UP ANIMATION ──
+function countUp(el, target, suffix = '') {
+  let current = 0;
+  const duration = 2000;
+  const step = target / (duration / 16);
+  const timer = setInterval(() => {
+    current += step;
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
+    const val = Math.floor(current);
+    el.textContent = val.toLocaleString() + suffix;
+  }, 16);
+}
+
+const heroObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    document.querySelectorAll('.count-num').forEach(el => {
+      const target = parseInt(el.dataset.target);
+      const suffix = target === 98 ? '%' : target === 50000 ? '+' : '+';
+      countUp(el, target, suffix);
+    });
+    heroObserver.disconnect();
+  }
+}, { threshold: 0.5 });
+
+heroObserver.observe(document.querySelector('.hero-stats'));
+
+// ── VOICE TOGGLE ──
+function toggleVoice(card) {
+  const wasPlaying = card.classList.contains('playing');
+  document.querySelectorAll('.voice-card').forEach(c => {
+    c.classList.remove('playing');
+    c.querySelector('.voice-avatar').classList.remove('playing');
+    c.querySelector('.play-btn').textContent = '▶';
+  });
+  if (!wasPlaying) {
+    card.classList.add('playing');
+    card.querySelector('.voice-avatar').classList.add('playing');
+    card.querySelector('.play-btn').textContent = '⏸';
+  }
+}
+
+// ── DEMO TABS ──
+document.querySelectorAll('.demo-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+
+// ── CAP ITEMS ACTIVE ──
+document.querySelectorAll('.cap-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.cap-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+  });
+});
+
+// ── STYLE PILL TOGGLE ──
+document.querySelectorAll('.style-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.style-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+  });
+});
+
+// ── NAVBAR SCROLL ──
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  if (window.scrollY > 20) {
+    nav.style.background = 'rgba(10,10,15,0.97)';
+  } else {
+    nav.style.background = 'rgba(10,10,15,0.85)';
+  }
+});
+</script>
+</body>
+</html>
